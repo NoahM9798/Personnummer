@@ -8,6 +8,9 @@ namespace Personnummer
 {
     public class PersonnummerValidator
     {
-
+        public bool IsCorrectLength(string personnummer)
+        {
+            return personnummer != null && personnummer.Length == 10;
+        }
     }
 }
