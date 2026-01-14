@@ -12,45 +12,60 @@ if (!long.TryParse(pnr, out _))
 }
 
 // 3. Enkel kontroll att vi har 10 tecken
-if (pnr.Length == 10)
+if (pnr.Length != 10)
 {
-    // Anropa vår funktion som kollar datumet
-    if (IsDateValid(pnr))
-    {
-        Console.WriteLine("✅ Månad och dag är korrekta!");
-    }
-    else
-    {
-        Console.WriteLine("❌ Felaktigt datum (t.ex. månad 13 eller dag 32).");
-    }
+    Console.WriteLine("Du måste skriva 10 siffror.");
+    return;
+}
+
+// 4. Kolla datum och kontrollsiffra
+if (!IsDateValid(pnr))
+{
+    // Om datumet inte är korrekt
+    Console.WriteLine("[Fel] Felaktigt datum (t.ex. månad 13 eller dag 32).");
 }
 else
 {
-    Console.WriteLine("Du måste skriva 10 siffror.");
+    // Om datumet är korrekt, kolla kontrollsiffran
+    long pnrNum = long.Parse(pnr); // konvertera till long för IsControlDigitValid
+
+    if (IsControlDigitValid(pnrNum))
+    {
+        Console.WriteLine("[OK] Personnumret är korrekt!");
+    }
+    else
+    {
+        Console.WriteLine("[Fel] Felaktig kontrollsiffra!");
+    }
 }
+
 
 // --- FUNKTIONER / FUNCTIONS ---
 
 bool IsDateValid(string pnr)
 {
-    // PNR format: YYMMDD-XXXX
+    try
+    {
+        int yy = int.Parse(pnr.Substring(0, 2));    // År
+        int month = int.Parse(pnr.Substring(2, 2)); // Månad
+        int day = int.Parse(pnr.Substring(4, 2));   // Dag
 
-    // Hämta MÅNAD (Tecken på plats 2 och 3)
-    string monthString = pnr.Substring(2, 2);
-    int month = int.Parse(monthString);
+        // Bestäm århundrade: 1900- eller 2000-tal
+        int currentYear = DateTime.Now.Year % 100; // t.ex. 26 för 2026
+        int century = (yy > currentYear) ? 1900 : 2000;
+        int year = century + yy;
 
-    // Hämta DAG (Tecken på plats 4 och 5)
-    string dayString = pnr.Substring(4, 2);
-    int day = int.Parse(dayString);
+        // Skapa DateTime för att kolla om datumet finns
+        DateTime dt = new DateTime(year, month, day);
 
-    // Kolla Månad (1 - 12)
-    bool monthOk = (month >= 1 && month <= 12);
-
-    // Kolla Dag (1 - 31)
-    bool dayOk = (day >= 1 && day <= 31);
-
-    return monthOk && dayOk;
+        return true; // Datumet är giltigt
+    }
+    catch
+    {
+        return false; // Ogiltigt datum (t.ex. 31 februari)
+    }
 }
+
 
 bool IsControlDigitValid(long pnr)
 {
@@ -94,3 +109,4 @@ bool IsControlDigitValid(long pnr)
     // Stämmer de överens?
     return calculatedControlDigit == actualControlDigit;
 }
+
