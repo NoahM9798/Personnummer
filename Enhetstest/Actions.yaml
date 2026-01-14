@@ -1,0 +1,24 @@
+# name: Run Unit test
+# on: 
+#     push: 
+#         branches:
+#           -main
+
+# jobs: 
+#     build:
+#         runs-on: ubuntu-latest
+
+#         steps: 
+#         -name: checkout repository
+#         uses: actions/checkout@v4
+        
+#         -name: Set up .NET
+#         uses: actions/setup-dotnet@v4
+#         with:
+#           dotnet-version: '9.x'
+# -name: restore dependecies
+#         run: dotnet restore
+
+        
+# name: Run unit test
+#         run: dotnet test

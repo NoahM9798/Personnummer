@@ -1,2 +1,2 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿Console.Write("Skriv in ett personnummer: ");
+int personnummer = int.Parse(Console.ReadLine()!);
