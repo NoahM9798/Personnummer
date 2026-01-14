@@ -31,74 +31,70 @@ else
 
 // --- FUNKTIONER / FUNCTIONS ---
 
-//Giltiga datumkontroll
 bool IsDateValid(string pnr)
 {
     try
     {
-        int yy = int.Parse(pnr.Substring(0, 2)); // År
+        int yy = int.Parse(pnr.Substring(0, 2));    // År
         int month = int.Parse(pnr.Substring(2, 2)); // Månad
-        int day = int.Parse(pnr.Substring(4, 2)); // Dag
+        int day = int.Parse(pnr.Substring(4, 2));   // Dag
 
-        // Bestäm århundrade
-        int currentYear = DateTime.Now.Year % 100; // ex: 26 för 2026
-        int century;
-
-        if (yy > currentYear)
-            century = 1900;
-        else
-            century = 2000;
-
+        // Bestäm århundrade: 1900- eller 2000-tal
+        int currentYear = DateTime.Now.Year % 100; // t.ex. 26 för 2026
+        int century = (yy > currentYear) ? 1900 : 2000;
         int year = century + yy;
 
-        // Skapa DateTime för att validera datum
+        // Skapa DateTime för att kolla om datumet finns
         DateTime dt = new DateTime(year, month, day);
-        return true;
+
+        return true; // Datumet är giltigt
     }
     catch
     {
-        return false; // Ogiltigt datum
+        return false; // Ogiltigt datum (t.ex. 31 februari)
     }
 }
 
-// Luhn-kontroll sista siffran
-bool IsLuhnValid(string pnr)
+
+bool IsControlDigitValid(long pnr)
 {
+    // Vi gör om talet till en sträng för att enkelt kunna loopa igenom siffrorna.
+    // .PadLeft(10, '0') ser till att vi får 10 tecken även om personnumret börjar på 0.
+    string s = pnr.ToString().PadLeft(10, '0');
+
     int sum = 0;
 
-    for (int i = 0; i < 9; i++) // De 9 första siffrorna används
+    // Vi loopar igenom de första 9 siffrorna
+    for (int i = 0; i < 9; i++)
     {
-        int digit = int.Parse(pnr[i].ToString());
+        // Hämta siffran som ett heltal
+        int digit = int.Parse(s[i].ToString());
 
-        // Dubbel varannan siffra (index 0,2,4,6,8)
-        if (i % 2 == 0)
-            digit *= 2;
+        // Multiplicera varannan siffra med 2 och varannan med 1
+        // (Index 0, 2, 4... gånger 2 | Index 1, 3, 5... gånger 1)
+        int multiplier = (i % 2 == 0) ? 2 : 1;
+        int product = digit * multiplier;
 
-        // Om produkten >9, summera siffrorna (t.ex. 12 → 1+2=3)
-        if (digit > 9)
-            digit -= 9;
-
-        sum += digit;
+        // Om produkten blir 10 eller mer (t.ex. 6*2=12), 
+        // ska vi addera siffersumman (1+2=3). 
+        // Ett snabbt sätt att göra det är att ta produkten minus 9.
+        if (product > 9)
+        {
+            sum += (product - 9);
+        }
+        else
+        {
+            sum += product;
+        }
     }
 
-    // Beräkna kontrollsiffra
-    int checkDigit = (10 - (sum % 10)) % 10;
+    // Beräkna vad kontrollsiffran BORDE vara:
+    // Ta summan, hitta närmsta högre tiotal och se mellanskillnaden.
+    int calculatedControlDigit = (10 - (sum % 10)) % 10;
 
-    // Jämför med sista siffran
-    return checkDigit == int.Parse(pnr[9].ToString());
-}
-if (IsDateValid(pnr))
-{
-    if (IsLuhnValid(pnr))
-    {
-        Console.WriteLine("Personnumret är korrekt!");
-    }
-    else
-    {
-        Console.WriteLine("Felaktig kontrollsiffra!");
-    }
-}
-else
-{
-    Console.WriteLine("Felaktigt datum (t.ex. månad 13 eller dag 32).");
+    // Hämta den faktiska sista siffran från personnumret
+    int actualControlDigit = int.Parse(s[9].ToString());
+
+    // Stämmer de överens?
+    return calculatedControlDigit == actualControlDigit;
 }
