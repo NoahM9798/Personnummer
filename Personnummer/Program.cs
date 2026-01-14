@@ -2,7 +2,6 @@
 string input = Console.ReadLine() ?? ""; // Läs in som TEXT (String)
 
 // 1. Städa bort bindestreck om användaren skrev det
-// 1. Clean away hyphens if the user typed them
 string pnr = input.Replace("-", "").Replace(" ", "");
 
 // 2. Enkel kontroll att vi har 10 tecken
@@ -31,12 +30,10 @@ bool IsDateValid(string pnr)
     // Index:      012345...
 
     // Hämta MÅNAD (Tecken på plats 2 och 3)
-    // Get MONTH (Characters at index 2 and 3)
     string monthString = pnr.Substring(2, 2);
     int month = int.Parse(monthString);
 
     // Hämta DAG (Tecken på plats 4 och 5)
-    // Get DAY (Characters at index 4 and 5)
     string dayString = pnr.Substring(4, 2);
     int day = int.Parse(dayString);
 
@@ -44,7 +41,6 @@ bool IsDateValid(string pnr)
     bool monthOk = (month >= 1 && month <= 12);
 
     // Kolla Dag (1 - 31)
-    // (Man kan göra detta mer avancerat för februari, men detta räcker ofta för G)
     bool dayOk = (day >= 1 && day <= 31);
 
     return monthOk && dayOk;
