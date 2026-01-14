@@ -33,22 +33,29 @@ else
 
 bool IsDateValid(string pnr)
 {
-    // PNR format: YYMMDD-XXXX
-    // Index:      0123456...
+    try
+    {
+        int yy = int.Parse(pnr.Substring(0, 2)); // År
+        int month = int.Parse(pnr.Substring(2, 2)); // Månad
+        int day = int.Parse(pnr.Substring(4, 2)); // Dag
 
-    // Hämta MÅNAD (Tecken på plats 2 och 3)
-    string monthString = pnr.Substring(2, 2);
-    int month = int.Parse(monthString);
+        // Bestäm århundrade
+        int currentYear = DateTime.Now.Year % 100; // ex: 26 för 2026
+        int century;
 
-    // Hämta DAG (Tecken på plats 4 och 5)
-    string dayString = pnr.Substring(4, 2);
-    int day = int.Parse(dayString);
+        if (yy > currentYear)
+            century = 1900;
+        else
+            century = 2000;
 
-    // Kolla Månad (1 - 12)
-    bool monthOk = (month >= 1 && month <= 12);
+        int year = century + yy;
 
-    // Kolla Dag (1 - 31)
-    bool dayOk = (day >= 1 && day <= 31);
-
-    return monthOk && dayOk;
+        // Skapa DateTime för att validera datum
+        DateTime dt = new DateTime(year, month, day);
+        return true;
+    }
+    catch
+    {
+        return false; // Ogiltigt datum
+    }
 }
