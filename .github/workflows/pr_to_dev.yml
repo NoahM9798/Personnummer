@@ -1,0 +1,30 @@
+name: Run Unit Tests on PR to dev
+
+# Kör workflow när någon öppnar eller uppdaterar en pull request mot dev
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Hämta koden
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Installera .NET
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.x'
+
+    # 3. Återställ dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 4. Kör unit tester
+    - name: Run unit tests
+      run: dotnet test
