@@ -4,7 +4,7 @@ string input = Console.ReadLine() ?? ""; // Läs in som TEXT (String)
 // 1. Städa bort bindestreck om användaren skrev det
 string pnr = input.Replace("-", "").Replace(" ", "");
 
-// 2. Kontroll att det bara är siffror
+// 2. Kontroll att det bara är siffror.
 if (!long.TryParse(pnr, out _))
 {
     Console.WriteLine("Personnumret får bara innehålla siffror.");
