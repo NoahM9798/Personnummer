@@ -12,22 +12,33 @@ if (!long.TryParse(pnr, out _))
 }
 
 // 3. Enkel kontroll att vi har 10 tecken
-if (pnr.Length == 10)
+if (pnr.Length != 10)
 {
-    // Anropa vår funktion som kollar datumet
-    if (IsDateValid(pnr))
-    {
-        Console.WriteLine("Månad och dag är korrekta!");
-    }
-    else
-    {
-        Console.WriteLine("Felaktigt datum (t.ex. månad 13 eller dag 32).");
-    }
+    Console.WriteLine("Du måste skriva 10 siffror.");
+    return;
+}
+
+// 4. Kolla datum och kontrollsiffra
+if (!IsDateValid(pnr))
+{
+    // Om datumet inte är korrekt
+    Console.WriteLine("[Fel] Felaktigt datum (t.ex. månad 13 eller dag 32).");
 }
 else
 {
-    Console.WriteLine("Du måste skriva 10 siffror.");
+    // Om datumet är korrekt, kolla kontrollsiffran
+    long pnrNum = long.Parse(pnr); // konvertera till long för IsControlDigitValid
+
+    if (IsControlDigitValid(pnrNum))
+    {
+        Console.WriteLine("[OK] Personnumret är korrekt!");
+    }
+    else
+    {
+        Console.WriteLine("[Fel] Felaktig kontrollsiffra!");
+    }
 }
+
 
 // --- FUNKTIONER / FUNCTIONS ---
 
