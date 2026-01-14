@@ -17,11 +17,11 @@ if (pnr.Length == 10)
     // Anropa vår funktion som kollar datumet
     if (IsDateValid(pnr))
     {
-        Console.WriteLine("✅ Månad och dag är korrekta!");
+        Console.WriteLine("Månad och dag är korrekta!");
     }
     else
     {
-        Console.WriteLine("❌ Felaktigt datum (t.ex. månad 13 eller dag 32).");
+        Console.WriteLine("Felaktigt datum (t.ex. månad 13 eller dag 32).");
     }
 }
 else
@@ -31,6 +31,7 @@ else
 
 // --- FUNKTIONER / FUNCTIONS ---
 
+//Giltiga datumkontroll
 bool IsDateValid(string pnr)
 {
     try
@@ -58,4 +59,46 @@ bool IsDateValid(string pnr)
     {
         return false; // Ogiltigt datum
     }
+}
+
+// Luhn-kontroll sista siffran
+bool IsLuhnValid(string pnr)
+{
+    int sum = 0;
+
+    for (int i = 0; i < 9; i++) // De 9 första siffrorna används
+    {
+        int digit = int.Parse(pnr[i].ToString());
+
+        // Dubbel varannan siffra (index 0,2,4,6,8)
+        if (i % 2 == 0)
+            digit *= 2;
+
+        // Om produkten >9, summera siffrorna (t.ex. 12 → 1+2=3)
+        if (digit > 9)
+            digit -= 9;
+
+        sum += digit;
+    }
+
+    // Beräkna kontrollsiffra
+    int checkDigit = (10 - (sum % 10)) % 10;
+
+    // Jämför med sista siffran
+    return checkDigit == int.Parse(pnr[9].ToString());
+}
+if (IsDateValid(pnr))
+{
+    if (IsLuhnValid(pnr))
+    {
+        Console.WriteLine("Personnumret är korrekt!");
+    }
+    else
+    {
+        Console.WriteLine("Felaktig kontrollsiffra!");
+    }
+}
+else
+{
+    Console.WriteLine("Felaktigt datum (t.ex. månad 13 eller dag 32).");
 }
