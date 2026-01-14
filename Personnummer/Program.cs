@@ -45,3 +45,18 @@ bool IsDateValid(string pnr)
 
     return monthOk && dayOk;
 }
+static bool HarTioSiffror(string personnummer)
+{
+    if (string.IsNullOrWhiteSpace(personnummer))
+        return false;
+
+    // Ta bort bindestreck och plus
+    string pnr = personnummer.Replace("-", "").Replace("+", "");
+
+    // Om 12 siffror (inkl sekel), ta bort de två första
+    if (pnr.Length == 12)
+        pnr = pnr.Substring(2);
+
+    // Kontrollera exakt 10 siffror
+    return pnr.Length == 10 && pnr.All(char.IsDigit);
+}
