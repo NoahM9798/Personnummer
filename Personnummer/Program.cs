@@ -27,7 +27,6 @@ else
 bool IsDateValid(string pnr)
 {
     // PNR format: YYMMDD-XXXX
-    // Index:      012345...
 
     // Hämta MÅNAD (Tecken på plats 2 och 3)
     string monthString = pnr.Substring(2, 2);
@@ -44,19 +43,4 @@ bool IsDateValid(string pnr)
     bool dayOk = (day >= 1 && day <= 31);
 
     return monthOk && dayOk;
-}
-static bool HarTioSiffror(string personnummer)
-{
-    if (string.IsNullOrWhiteSpace(personnummer))
-        return false;
-
-    // Ta bort bindestreck och plus
-    string pnr = personnummer.Replace("-", "").Replace("+", "");
-
-    // Om 12 siffror (inkl sekel), ta bort de två första
-    if (pnr.Length == 12)
-        pnr = pnr.Substring(2);
-
-    // Kontrollera exakt 10 siffror
-    return pnr.Length == 10 && pnr.All(char.IsDigit);
 }
