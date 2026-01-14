@@ -27,7 +27,6 @@ else
 bool IsDateValid(string pnr)
 {
     // PNR format: YYMMDD-XXXX
-    // Index:      0123456...
 
     // Hämta MÅNAD (Tecken på plats 2 och 3)
     string monthString = pnr.Substring(2, 2);
