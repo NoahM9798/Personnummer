@@ -1,6 +1,6 @@
 name: Run Unit Tests on PR to dev
 
-# Kör workflow när någon öppnar eller uppdaterar en pull request mot dev.
+# Kör workflow när någon öppnar eller uppdaterar en pull request mot dev
 on:
   push:
     branches:
