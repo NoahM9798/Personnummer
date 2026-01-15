@@ -1,10 +1,20 @@
-﻿namespace Enhetstest
+﻿using Personnummer;
+
+namespace Enhetstest
 {
-    public class UnitTest1
+    public class PersonnummerTest
     {
         [Fact]
-        public void Test1()
+        public void IsCorrectLength_ReturnTrue_10digits()
         {
+            //Arrange
+            var validator = new PersonnummerValidator();
+
+            //Act
+            bool result = validator.IsCorrectLength("8111011237");
+
+            //Assert
+            Assert.True(result);
 
         }
     }
