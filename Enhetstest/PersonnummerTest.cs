@@ -12,7 +12,7 @@ namespace Enhetstest
             var validator = new PersonnummerValidator();
 
             //Act
-            bool result = validator.IsCorrectLength("8301011237");
+            bool result = validator.IsCorrectLength("8201011237");
 
             //Assert
             Assert.True(result);
