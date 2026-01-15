@@ -2,10 +2,9 @@ name: Run Unit Tests on PR to dev
 
 # Kör workflow när någon öppnar eller uppdaterar en pull request mot dev
 on:
-  push:
+  pull_request:
     branches:
-      - susrej-testar-git-action
-
+      [ "dev" ]
 jobs:
   build:
     runs-on: ubuntu-latest
