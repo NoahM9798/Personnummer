@@ -19,52 +19,28 @@ if (pnr.Length != 10)
 }
 
 // 4. Kolla datum och kontrollsiffra
-if (!IsDateValid(pnr))
-{
-    // Om datumet inte är korrekt
-    Console.WriteLine("[Fel] Felaktigt datum (t.ex. månad 13 eller dag 32).");
-}
-else
-{
-    // Om datumet är korrekt, kolla kontrollsiffran
-    long pnrNum = long.Parse(pnr); // konvertera till long för IsControlDigitValid
+//if (!IsDateValid(pnr))
+//{
+//    // Om datumet inte är korrekt
+//    Console.WriteLine("[Fel] Felaktigt datum (t.ex. månad 13 eller dag 32).");
+//}
+//else
+//{
+//    // Om datumet är korrekt, kolla kontrollsiffran
+//    long pnrNum = long.Parse(pnr); // konvertera till long för IsControlDigitValid
 
-    if (IsControlDigitValid(pnrNum))
-    {
-        Console.WriteLine("[OK] Personnumret är korrekt!");
-    }
-    else
-    {
-        Console.WriteLine("[Fel] Felaktig kontrollsiffra!");
-    }
-}
+//    if (IsControlDigitValid(pnrNum))
+//    {
+//        Console.WriteLine("[OK] Personnumret är korrekt!");
+//    }
+//    else
+//    {
+//        Console.WriteLine("[Fel] Felaktig kontrollsiffra!");
+//    }
+//}
 
 
 // --- FUNKTIONER / FUNCTIONS ---
-
-bool IsDateValid(string pnr)
-{
-    try
-    {
-        int yy = int.Parse(pnr.Substring(0, 2));    // År
-        int month = int.Parse(pnr.Substring(2, 2)); // Månad
-        int day = int.Parse(pnr.Substring(4, 2));   // Dag
-
-        // Bestäm århundrade: 1900- eller 2000-tal
-        int currentYear = DateTime.Now.Year % 100; // t.ex. 26 för 2026
-        int century = (yy > currentYear) ? 1900 : 2000;
-        int year = century + yy;
-
-        // Skapa DateTime för att kolla om datumet finns
-        DateTime dt = new DateTime(year, month, day);
-
-        return true; // Datumet är giltigt
-    }
-    catch
-    {
-        return false; // Ogiltigt datum (t.ex. 31 februari)
-    }
-}
 
 
 bool IsControlDigitValid(long pnr)
