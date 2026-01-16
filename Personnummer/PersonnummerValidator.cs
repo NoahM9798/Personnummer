@@ -76,5 +76,10 @@ namespace Personnummer
             // Stämmer de överens?
             return calculatedControlDigit == actualControlDigit;
         }
+
+        public string HyphenRemover(string input)
+        {
+            return input.Replace("-", "").Replace(" ", "");
+        }
     }
 }
