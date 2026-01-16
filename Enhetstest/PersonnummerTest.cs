@@ -86,5 +86,17 @@ namespace Enhetstest
             // Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public void HyphenRemover_ReturnsStringWithoutHyphen()
+        {
+            // Arrange
+            var validator = new PersonnummerValidator();
+            string input = "811218-9876";
+            // Act
+            string result = validator.HyphenRemover(input);
+            // Assert
+            Assert.Equal("8112189876", result);
+        }
     }
 }
