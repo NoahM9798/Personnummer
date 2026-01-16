@@ -1,42 +1,30 @@
-﻿Console.Write("Skriv in personnummer (10 siffror, t.ex. 811218-9876): ");
+﻿using Personnummer;
+
+Console.Write("Skriv in personnummer (10 siffror, t.ex. 811218-9876): ");
 string input = Console.ReadLine() ?? ""; // Läs in som TEXT (String)
+PersonnummerValidator validator = new PersonnummerValidator();
 
 // 1. Städa bort bindestreck om användaren skrev det
-string pnr = input.Replace("-", "").Replace(" ", "");
+string inputHyphenRemoved = validator.HyphenRemover(input);
 
-// 2. Kontroll att det bara är siffror.
-if (!long.TryParse(pnr, out _))
+// 2. Kontroll att datumet är giltligt.
+if (validator.IsDateValid(inputHyphenRemoved))
 {
-    Console.WriteLine("Personnumret får bara innehålla siffror.");
-    return;
+    Console.WriteLine("[OK] Datumet är giltigt.");
+}
+else
+{
+    Console.WriteLine("[Fel] Felaktigt datum (t.ex. månad 13 eller dag 32).");
 }
 
-// 3. Enkel kontroll att vi har 10 tecken
-if (pnr.Length != 10)
+
+// 3. Kolla kontrollsiffra
+if (validator.IsControlDigitValid(long.Parse(inputHyphenRemoved)))
 {
-    Console.WriteLine("Du måste skriva 10 siffror.");
-    return;
+    Console.WriteLine("[OK] Detta är ett giltligt personnummer!");
 }
-
-// 4. Kolla datum och kontrollsiffra
-//if (!IsDateValid(pnr))
-//{
-//    // Om datumet inte är korrekt
-//    Console.WriteLine("[Fel] Felaktigt datum (t.ex. månad 13 eller dag 32).");
-//}
-//else
-//{
-//    // Om datumet är korrekt, kolla kontrollsiffran
-//    long pnrNum = long.Parse(pnr); // konvertera till long för IsControlDigitValid
-
-//    if (IsControlDigitValid(pnrNum))
-//    {
-//        Console.WriteLine("[OK] Personnumret är korrekt!");
-//    }
-//    else
-//    {
-//        Console.WriteLine("[Fel] Felaktig kontrollsiffra!");
-//    }
-//}
-
+else
+{
+    Console.WriteLine("[Fel] Detta personnummer finns inte!");
+}
 
