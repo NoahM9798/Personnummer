@@ -1,0 +1,39 @@
+name: Docker Publish to DockerHub
+
+on:
+  push:
+    branches: [ "main" ] # Körs när kod pushas eller mergas till main
+
+jobs:
+  # Steg 1: Kontrollera att testerna i PersonnummerTest.cs fortfarande går igenom
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x' # Matchar din .csproj
+      - name: Run Unit Tests
+        run: dotnet test # Kör testerna
+
+  # Steg 2: Om testerna är gröna, bygg och skicka till DockerHub
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/personnummer-app:latest
